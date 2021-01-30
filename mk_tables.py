@@ -13,6 +13,7 @@ cursor.execute('''DROP TABLE IF EXISTS regions''')
 
 cursor.execute('''CREATE TABLE regions (
 				  key INT,
+				  prov TEXT,
 				  name TEXT,
 				  classification TEXT,
 				  measures TEXT,

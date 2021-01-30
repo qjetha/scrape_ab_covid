@@ -108,9 +108,9 @@ def update_sql(regions):
 		# if no entry then: (1) insert new data into db
 		for region in regions.keys():
 			
-			cursor.execute('''INSERT INTO regions (key, name, classification, measures, active_cases, population, active_rate, d_date, hour) 
-					  		  VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)''', 
-					  		  	(regions[region].key, regions[region].name, 
+			cursor.execute('''INSERT INTO regions (key, prov, name, classification, measures, active_cases, population, active_rate, d_date, hour) 
+					  		  VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''', 
+					  		  	(regions[region].key, "AB", regions[region].name, 
 					  		  	regions[region].classification, regions[region].measures, regions[region].active_cases, 
 					  		  	regions[region].population, regions[region].active_rate, now_alb_date, now_alb_hour))
 			conn.commit()
