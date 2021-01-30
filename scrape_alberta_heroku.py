@@ -11,9 +11,8 @@ chrome_options.add_argument("--no-sandbox")
 
 class RegionData:
 
+	province = "AB"
 	region_count = 1
-	min_active = 1000000
-	max_active = 0
 
 	def __init__(self, name, classification, measures, active_cases, population):
 		self.name = name
@@ -28,12 +27,6 @@ class RegionData:
 			self.active_rate = (100000/self.population) * self.active_cases
 		else:
 			self.active_rate = 0
-
-		if self.active_rate > RegionData.max_active:
-			RegionData.max_active = self.active_rate
-
-		if self.active_rate < RegionData.min_active:
-			RegionData.min_active = self.active_rate
 		
 		RegionData.region_count += 1
 
@@ -110,7 +103,7 @@ def update_sql(regions):
 			
 			cursor.execute('''INSERT INTO regions (key, prov, name, classification, measures, active_cases, population, active_rate, d_date, hour) 
 					  		  VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''', 
-					  		  	(regions[region].key, "AB", regions[region].name, 
+					  		  	(regions[region].key, RegionData.province, regions[region].name, 
 					  		  	regions[region].classification, regions[region].measures, regions[region].active_cases, 
 					  		  	regions[region].population, regions[region].active_rate, now_alb_date, now_alb_hour))
 			conn.commit()
