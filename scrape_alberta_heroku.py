@@ -90,16 +90,18 @@ def scrape_alberta():
 
 def update_sql(regions):
 
-	time_now = datetime.datetime.now()
-	today_date = time_now.date()
-	this_hour = time_now.hour
+	now_utc = datetime.datetime.today()
+	now_alb = now_utc - datetime.timedelta(hours=7)
+
+	now_alb_date = now_alb.date()
+	now_alb_hour = now_alb.hour
 
 	conn = psycopg2.connect(os.environ.get("DATABASE_URL"))
 
 	cursor = conn.cursor()
 
 	# check if entry in DB for today's date
-	cursor.execute('SELECT key FROM regions WHERE d_date = (%s)', (today_date,))
+	cursor.execute('SELECT key FROM regions WHERE d_date = (%s)', (now_alb_date,))
 
 	if cursor.fetchone() == None:
 		
@@ -110,11 +112,11 @@ def update_sql(regions):
 					  		  VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)''', 
 					  		  	(regions[region].key, regions[region].name, 
 					  		  	regions[region].classification, regions[region].measures, regions[region].active_cases, 
-					  		  	regions[region].population, regions[region].active_rate, today_date, this_hour))
+					  		  	regions[region].population, regions[region].active_rate, now_alb_date, now_alb_hour))
 			conn.commit()
 
 		# if no entry then: (2) delete data from a week ago
-		week_ago = today_date - datetime.timedelta(7)
+		week_ago = now_alb_date - datetime.timedelta(7)
 
 		cursor.execute('DELETE FROM regions WHERE d_date = (%s)', (week_ago,))
 
@@ -131,7 +133,7 @@ def update_sql(regions):
 							  (%s, %s, %s, %s, %s, %s, %s) 
 							  WHERE name = (%s)''',
 							  	(regions[region].classification, regions[region].measures, regions[region].active_cases,
-							  	regions[region].population, regions[region].active_rate, today_date, this_hour, region))
+							  	regions[region].population, regions[region].active_rate, now_alb_date, now_alb_hour, region))
 
 			conn.commit()
 
