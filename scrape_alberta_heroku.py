@@ -41,52 +41,52 @@ class RegionData:
 
 
 def scrape_alberta():
-	print('hi')
-	# driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
 
-	# alberta_listings = r"https://www.alberta.ca/maps/covid-19-status-map.htm"
+	driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
 
-	# time.sleep(3)
+	alberta_listings = r"https://www.alberta.ca/maps/covid-19-status-map.htm"
 
-	# driver.get(alberta_listings)
+	time.sleep(3)
 
-	# regions = dict()
+	driver.get(alberta_listings)
 
-	# def get_page():
+	regions = dict()
 
-	# 	soup = bs4(driver.page_source, 'lxml')
+	def get_page():
 
-	# 	full_tr = soup.find_all('tr', {'class': 'odd'})
+		soup = bs4(driver.page_source, 'lxml')
 
-	# 	def get_table_data(class_name):
-	# 		for tr in soup.find_all('tr', {'class': class_name}):
-	# 			pull_data = list()
-	# 			for td in tr.findAll('td'):
-	# 				pull_data.append(td.string)
+		full_tr = soup.find_all('tr', {'class': 'odd'})
+
+		def get_table_data(class_name):
+			for tr in soup.find_all('tr', {'class': class_name}):
+				pull_data = list()
+				for td in tr.findAll('td'):
+					pull_data.append(td.string)
 			
-	# 			regions[pull_data[1]] = RegionData(pull_data[1], pull_data[2], pull_data[3], pull_data[5], pull_data[6])
+				regions[pull_data[1]] = RegionData(pull_data[1], pull_data[2], pull_data[3], pull_data[5], pull_data[6])
 		
-	# 	get_table_data('odd')
-	# 	get_table_data('even')
+		get_table_data('odd')
+		get_table_data('even')
 
 
-	# def click_page():
-	# 	time.sleep(1)
-	# 	elem = driver.find_element_by_link_text('Next')
-	# 	driver.execute_script("window.scrollTo(0, 1000)")
+	def click_page():
+		time.sleep(1)
+		elem = driver.find_element_by_link_text('Next')
+		driver.execute_script("window.scrollTo(0, 1000)")
 
-	# 	elem.click()
+		elem.click()
 
 
-	# # 3 pages of region data. Let's just loop over them.
-	# for page in range(0, 3):
-	# 	if page==0:
-	# 		get_page()
-	# 	else:
-	# 		click_page()
-	# 		get_page()
+	# 3 pages of region data. Let's just loop over them.
+	for page in range(0, 3):
+		if page==0:
+			get_page()
+		else:
+			click_page()
+			get_page()
 
-	# return regions
+	return regions
 
 
 
@@ -141,4 +141,4 @@ def update_sql(regions):
 
 
 
-scrape_alberta()
+update_sql(scrape_alberta())
