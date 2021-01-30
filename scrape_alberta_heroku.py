@@ -11,7 +11,7 @@ chrome_options.add_argument("--no-sandbox")
 
 class RegionData:
 
-	province = "AB"
+	province = "Alb."
 	region_count = 1
 
 	def __init__(self, name, classification, measures, active_cases, population):
