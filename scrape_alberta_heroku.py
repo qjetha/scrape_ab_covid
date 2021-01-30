@@ -41,10 +41,10 @@ class RegionData:
 
 
 def scrape_alberta():
+	print('hi')
+	# driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
 
-	driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
-
-	alberta_listings = r"https://www.alberta.ca/maps/covid-19-status-map.htm"
+	# alberta_listings = r"https://www.alberta.ca/maps/covid-19-status-map.htm"
 
 	# time.sleep(3)
 
