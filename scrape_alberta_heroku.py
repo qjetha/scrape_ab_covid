@@ -141,4 +141,4 @@ def update_sql(regions):
 
 
 
-update_sql(scrape_alberta())
+scrape_alberta()
