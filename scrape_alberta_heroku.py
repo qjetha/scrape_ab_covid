@@ -94,9 +94,9 @@ def update_sql(regions):
 	today_date = time_now.date()
 	this_hour = time_now.hour
 
-	conn = psycopg2.connect()
+	conn = psycopg2.connect(os.environ.get("DATABASE_URL"))
 
-	cursor = conn.cursor(os.environ.get("DATABASE_URL"))
+	cursor = conn.cursor()
 
 	# check if entry in DB for today's date
 	cursor.execute('SELECT key FROM regions WHERE d_date = (%s)', (today_date,))
