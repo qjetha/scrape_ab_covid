@@ -41,7 +41,7 @@ class RegionData:
 
 
 def scrape_alberta():
-
+	print('hi')
 	driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
 
 	alberta_listings = r"https://www.alberta.ca/maps/covid-19-status-map.htm"
@@ -53,7 +53,7 @@ def scrape_alberta():
 	regions = dict()
 
 	def get_page():
-
+		print('y')
 		soup = bs4(driver.page_source, 'lxml')
 
 		full_tr = soup.find_all('tr', {'class': 'odd'})
@@ -91,7 +91,7 @@ def scrape_alberta():
 
 
 def update_sql(regions):
-
+	print('l')
 	time_now = datetime.datetime.now()
 	today_date = time_now.date()
 	this_hour = time_now.hour
