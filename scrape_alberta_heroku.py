@@ -3,8 +3,6 @@ import requests, time, psycopg2, datetime, os
 from bs4 import BeautifulSoup as bs4
 from selenium import webdriver
 
-import config
-
 chrome_options = webdriver.ChromeOptions()
 chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 chrome_options.add_agrument("--headless")
@@ -44,7 +42,6 @@ class RegionData:
 
 def scrape_alberta():
 
-	chrome_path = r'/Users/qayamjetha/Documents/alberta_covid_tracker/sql/chromedriver'
 	driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
 
 	alberta_listings = r"https://www.alberta.ca/maps/covid-19-status-map.htm"

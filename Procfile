@@ -1,0 +1,1 @@
+web: python scrape_alberta_heroku.py

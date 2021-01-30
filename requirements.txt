@@ -1,0 +1,15 @@
+absl-py==0.9.0
+alabaster==0.7.12
+altgraph==0.17
+anaconda-clean==1.0
+anaconda-client==1.7.2
+anaconda-navigator==1.9.7
+anaconda-project==0.8.3
+beautifulsoup4==4.8.0
+lxml==4.4.1
+psycopg2==2.8.4
+python-dateutil==2.8.0
+requests==2.23.0
+requests-oauthlib==1.3.0
+selenium==3.141.0
+Send2Trash==1.5.0
