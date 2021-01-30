@@ -2,7 +2,7 @@ import requests, time, psycopg2, datetime, os
 
 from bs4 import BeautifulSoup as bs4
 from selenium import webdriver
-
+print(os.environ.get('CHROMEDRIVER_PATH'))
 chrome_options = webdriver.ChromeOptions()
 chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 chrome_options.add_argument("--headless")
