@@ -46,47 +46,47 @@ def scrape_alberta():
 
 	alberta_listings = r"https://www.alberta.ca/maps/covid-19-status-map.htm"
 
-	time.sleep(3)
+	# time.sleep(3)
 
-	driver.get(alberta_listings)
+	# driver.get(alberta_listings)
 
-	regions = dict()
+	# regions = dict()
 
-	def get_page():
+	# def get_page():
 
-		soup = bs4(driver.page_source, 'lxml')
+	# 	soup = bs4(driver.page_source, 'lxml')
 
-		full_tr = soup.find_all('tr', {'class': 'odd'})
+	# 	full_tr = soup.find_all('tr', {'class': 'odd'})
 
-		def get_table_data(class_name):
-			for tr in soup.find_all('tr', {'class': class_name}):
-				pull_data = list()
-				for td in tr.findAll('td'):
-					pull_data.append(td.string)
+	# 	def get_table_data(class_name):
+	# 		for tr in soup.find_all('tr', {'class': class_name}):
+	# 			pull_data = list()
+	# 			for td in tr.findAll('td'):
+	# 				pull_data.append(td.string)
 			
-				regions[pull_data[1]] = RegionData(pull_data[1], pull_data[2], pull_data[3], pull_data[5], pull_data[6])
+	# 			regions[pull_data[1]] = RegionData(pull_data[1], pull_data[2], pull_data[3], pull_data[5], pull_data[6])
 		
-		get_table_data('odd')
-		get_table_data('even')
+	# 	get_table_data('odd')
+	# 	get_table_data('even')
 
 
-	def click_page():
-		time.sleep(1)
-		elem = driver.find_element_by_link_text('Next')
-		driver.execute_script("window.scrollTo(0, 1000)")
+	# def click_page():
+	# 	time.sleep(1)
+	# 	elem = driver.find_element_by_link_text('Next')
+	# 	driver.execute_script("window.scrollTo(0, 1000)")
 
-		elem.click()
+	# 	elem.click()
 
 
-	# 3 pages of region data. Let's just loop over them.
-	for page in range(0, 3):
-		if page==0:
-			get_page()
-		else:
-			click_page()
-			get_page()
+	# # 3 pages of region data. Let's just loop over them.
+	# for page in range(0, 3):
+	# 	if page==0:
+	# 		get_page()
+	# 	else:
+	# 		click_page()
+	# 		get_page()
 
-	return regions
+	# return regions
 
 
 
