@@ -124,9 +124,9 @@ def update_sql(regions):
 			cursor.execute('''UPDATE regions 
 							  SET (classification, measures, active_cases, population, active_rate, d_date, hour) =
 							  (%s, %s, %s, %s, %s, %s, %s) 
-							  WHERE name = (%s)''',
+							  WHERE name = (%s) AND d_date = (%s)''',
 							  	(regions[region].classification, regions[region].measures, regions[region].active_cases,
-							  	regions[region].population, regions[region].active_rate, now_alb_date, now_alb_hour, region))
+							  	regions[region].population, regions[region].active_rate, now_alb_date, now_alb_hour, region, now_alb_date))
 
 			conn.commit()
 
