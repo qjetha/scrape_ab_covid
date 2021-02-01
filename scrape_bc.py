@@ -44,8 +44,7 @@ class CaseData:
 
 def scrape_bc():
 
-	chrome_path = r'/Users/qayamjetha/Documents/alberta_covid_tracker/sql/chromedriver'
-	driver = webdriver.Chrome(executable_path=chrome_path)
+	driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
 
 	bc_listings = r'https://governmentofbc.maps.arcgis.com/home/item.html?id=b8a2b437ccc24f04b975f76df6814cb1#data'
 	driver.get(bc_listings)
