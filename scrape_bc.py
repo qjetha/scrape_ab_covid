@@ -110,10 +110,7 @@ def groupby_name(cases):
 
 def update_sql(cases):
 
-	conn = psycopg2.connect(host=config.host, 
-							database=config.database,
-							user=config.user, 
-							password=config.password)	
+	conn = psycopg2.connect(os.environ.get("DATABASE_URL"))
 
 	cursor = conn.cursor()
 	cursor.execute('truncate CB')
