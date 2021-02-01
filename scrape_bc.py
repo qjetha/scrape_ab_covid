@@ -9,6 +9,7 @@ chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument("start-maximized")
 
 
 class CaseData:
@@ -43,7 +44,8 @@ class CaseData:
 
 def scrape_bc():
 
-	driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+	chrome_path = r'/Users/qayamjetha/Documents/alberta_covid_tracker/sql/chromedriver'
+	driver = webdriver.Chrome(executable_path=chrome_path)
 
 	bc_listings = r'https://governmentofbc.maps.arcgis.com/home/item.html?id=b8a2b437ccc24f04b975f76df6814cb1#data'
 	driver.get(bc_listings)
