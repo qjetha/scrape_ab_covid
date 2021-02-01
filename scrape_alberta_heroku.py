@@ -1,4 +1,4 @@
-import requests, time, psycopg2, datetime, os
+import time, psycopg2, datetime, os
 
 from bs4 import BeautifulSoup as bs4
 from selenium import webdriver
@@ -8,6 +8,7 @@ chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--no-sandbox")
+
 
 class RegionData:
 
@@ -32,14 +33,14 @@ class RegionData:
 
 
 
-def scrape_alberta():
+def scrape_alb():
 	driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
 
-	alberta_listings = r"https://www.alberta.ca/maps/covid-19-status-map.htm"
+	alb_listings = r"https://www.alberta.ca/maps/covid-19-status-map.htm"
 
 	time.sleep(3)
 
-	driver.get(alberta_listings)
+	driver.get(alb_listings)
 
 	regions = dict()
 
@@ -94,14 +95,14 @@ def update_sql(regions):
 	cursor = conn.cursor()
 
 	# check if entry in DB for today's date
-	cursor.execute('SELECT key FROM regions WHERE d_date = (%s)', (now_alb_date,))
+	cursor.execute('SELECT key FROM alb WHERE d_date = (%s)', (now_alb_date,))
 
 	if cursor.fetchone() == None:
 		
 		# if no entry then: (1) insert new data into db
 		for region in regions.keys():
 			
-			cursor.execute('''INSERT INTO regions (key, prov, name, classification, measures, active_cases, population, active_rate, d_date, hour) 
+			cursor.execute('''INSERT INTO alb (key, prov, name, classification, measures, active_cases, population, active_rate, d_date, hour) 
 					  		  VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''', 
 					  		  	(regions[region].key, RegionData.province, regions[region].name, 
 					  		  	regions[region].classification, regions[region].measures, regions[region].active_cases, 
@@ -109,9 +110,9 @@ def update_sql(regions):
 			conn.commit()
 
 		# if no entry then: (2) delete data from a week ago
-		week_ago = now_alb_date - datetime.timedelta(7)
+		week_ago = now_alb_date - datetime.timedelta(8)
 
-		cursor.execute('DELETE FROM regions WHERE d_date = (%s)', (week_ago,))
+		cursor.execute('DELETE FROM alb WHERE d_date = (%s)', (week_ago,))
 
 		conn.commit()
 
@@ -121,12 +122,13 @@ def update_sql(regions):
 		for region in regions.keys():
 
 			# if entry than update the data for today
-			cursor.execute('''UPDATE regions 
+			cursor.execute('''UPDATE alb 
 							  SET (classification, measures, active_cases, population, active_rate, d_date, hour) =
 							  (%s, %s, %s, %s, %s, %s, %s) 
-							  WHERE name = (%s) AND d_date = (%s)''',
+							  WHERE name = (%s) AND d_date = (%s) AND prov = (%s)''',
 							  	(regions[region].classification, regions[region].measures, regions[region].active_cases,
-							  	regions[region].population, regions[region].active_rate, now_alb_date, now_alb_hour, region, now_alb_date))
+							  	regions[region].population, regions[region].active_rate, now_alb_date, now_alb_hour, 
+							  	region, now_alb_date, RegionData.province))
 
 			conn.commit()
 
@@ -134,4 +136,6 @@ def update_sql(regions):
 
 
 
-update_sql(scrape_alberta())
+if __name__ == "__main__":
+
+	update_sql(scrape_alb())
