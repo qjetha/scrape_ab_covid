@@ -15,9 +15,8 @@ class RegionData:
 	province = "Alb."
 	region_count = 1
 
-	def __init__(self, name, classification, measures, active_cases, population):
+	def __init__(self, name, measures, active_cases, population):
 		self.name = name
-		self.classification = classification
 		self.measures = measures
 		self.active_cases = int(active_cases)
 		self.population = int(population)
@@ -56,7 +55,7 @@ def scrape_alb():
 				for td in tr.findAll('td'):
 					pull_data.append(td.string)
 			
-				regions[pull_data[1]] = RegionData(pull_data[1], pull_data[2], pull_data[3], pull_data[5], pull_data[6])
+				regions[pull_data[1]] = RegionData(pull_data[1], pull_data[2], pull_data[4], pull_data[5])
 		
 		get_table_data('odd')
 		get_table_data('even')
@@ -102,10 +101,10 @@ def update_sql(regions):
 		# if no entry then: (1) insert new data into db
 		for region in regions.keys():
 			
-			cursor.execute('''INSERT INTO alb (key, prov, name, classification, measures, active_cases, population, active_rate, d_date, hour) 
-					  		  VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''', 
+			cursor.execute('''INSERT INTO alb (key, prov, name, measures, active_cases, population, active_rate, d_date, hour) 
+					  		  VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)''', 
 					  		  	(regions[region].key, RegionData.province, regions[region].name, 
-					  		  	regions[region].classification, regions[region].measures, regions[region].active_cases, 
+					  		  	regions[region].measures, regions[region].active_cases, 
 					  		  	regions[region].population, regions[region].active_rate, now_alb_date, now_alb_hour))
 			conn.commit()
 
@@ -123,10 +122,10 @@ def update_sql(regions):
 
 			# if entry than update the data for today
 			cursor.execute('''UPDATE alb 
-							  SET (classification, measures, active_cases, population, active_rate, d_date, hour) =
-							  (%s, %s, %s, %s, %s, %s, %s) 
+							  SET (measures, active_cases, population, active_rate, d_date, hour) =
+							  (%s, %s, %s, %s, %s, %s) 
 							  WHERE name = (%s) AND d_date = (%s) AND prov = (%s)''',
-							  	(regions[region].classification, regions[region].measures, regions[region].active_cases,
+							  	(regions[region].measures, regions[region].active_cases,
 							  	regions[region].population, regions[region].active_rate, now_alb_date, now_alb_hour, 
 							  	region, now_alb_date, RegionData.province))
 

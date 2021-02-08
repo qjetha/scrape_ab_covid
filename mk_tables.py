@@ -21,7 +21,6 @@ if alberta==1:
 					  key INT,
 					  prov TEXT,
 					  name TEXT,
-					  classification TEXT,
 					  measures TEXT,
 					  active_cases INT,
 					  population INT,
